@@ -1,7 +1,5 @@
 import requests as rq
 from bs4 import BeautifulSoup as bs
-import json
-
 
 # brouillon code:
 url = 'http://books.toscrape.com/catalogue/dune-dune-1_151/index.html'
@@ -11,7 +9,7 @@ def get_page(url):
     """Fonction permettant de  vérifier si la page existe 
     et de tester s'il n'y a pas de problème"""
     try:
-        reponse = rq.get(url)
+        response = rq.get(url)
     except rq.exceptions.ConnectionError:
         return ("Il y a un problème réseau vérifier si votre réseau fonctionne.")
     except rq.exceptions.Timeout:
@@ -22,22 +20,22 @@ def get_page(url):
         return ("Le nombre de redirections est dépassé")
     finally:
         pass 
+    return response
 
-    return reponse
-
-def create_soup(in_reponse):
-    page_soup = bs(in_reponse.content)
+def create_soup(in_response):
+    """Fonction permettant de créer la soupe"""
+    page_soup = bs(in_response.content.decode("utf-8", "ignore"), "html.parser")
     return page_soup
 
 
 print("CHECKPOINT -- outils.py")
 # Récuperer le contenu de la page
-response = get_page(url)
+reponse = get_page(url)
 # Créer la classe qui analyse le contenu de la page
-page_soupe = bs(response.content)
+#page_soupe = bs(response.content)
 
 #print(page_soupe)
-print(type(page_soupe))
+#print(type(page_soupe))
 print("CHECKPOINT -- outils.py")
 
 
