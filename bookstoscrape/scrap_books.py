@@ -1,17 +1,26 @@
-import bookstoscrape.outils as tools
+from outils import get_page
 import os
+from bs4 import BeautifulSoup as bs
+
+
+url = 'http://books.toscrape.com/catalogue/dune-dune-1_151/index.html'
 
 def get_book_info(soup):
     """Fonction permettant de récupérer les infos d'un livre
     et de les enregistrer dans un dictionnaire"""
-    soup = tools.create_soup(in_response)
-    title_book = soup.find('h1').text
-    #try:
-        #creer un dico vide du nom du titre s'il n'existe pas
-        # continue
+    myDico = {}    
+    soup = get_page(url)
+
+    print(soup.head)
+
+    title = soup.find('title').text
+    print(title)
+
     #- récuperer les infos (parser)
-    for info_book in tools.create_soup.find_all('td'):
-        pass
+    for elt in soup.find_all("td"):
+        print("{}".format(elt.text))
+    
+     #   return (elt)
     return "hello"
 
 
@@ -20,14 +29,15 @@ def save_book_into_csv(csvfile, book_info):
     livre dans un fichier csv"""
     try:
         os.mkdir("csvfile")
-        print("Repertoire csv cree")
+        return ("Repertoire csv cree")
     except FileExistsError:
-        print("Le repertoire existe deja.")
+        return ("Le repertoire existe deja.")
     
     
 
 
 def save_image(image):
+    pass
     #if image exist:
     #    continue
     #else:
@@ -36,14 +46,16 @@ def save_image(image):
 
 def main():
     """??"""
-    soup = tools.get_page(
-        'http://books.toscrape.com/catalogue/dune-dune-1_151/index.html'
-    )
+    soup = get_page('http://books.toscrape.com/catalogue/dune-dune-1_151/index.html')
     book_info = get_book_info(soup)
-    with open('a_category.csv') as csvfile:
-        save_book_into_csv(csvfile, book_info)
+    #with open('a_category.csv') as csvfile:
+    #    save_book_into_csv(csvfile, book_info)
     
-
+#print(get_book_info(soup))
 
 if __name__ == "__main__":
     main()
+
+#soup = tools.create_soup(url)
+#soupe = soup.find("h1").text
+#print(soupe)
