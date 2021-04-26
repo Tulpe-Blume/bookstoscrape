@@ -1,5 +1,6 @@
 import requests as rq
 from bs4 import BeautifulSoup as bs
+import sys
 
 # brouillon code:
 url = 'http://books.toscrape.com/catalogue/dune-dune-1_151/index.html'
@@ -23,20 +24,18 @@ def get_page(url):
         return ("La page est joignable et peut être analysée!")
 
 
-page = rq.get(url)
-
-
-def create_soup(url, page):
-    """Fonction permettant de créer la soupe"""
+def create_soup(url):
+    """Fonction permettant de créer la soupe si la page existe"""
     page = rq.get(url)
-    if page.raise_for_status() is page.ok:
+    if page.ok:
         page_soup = bs(page.content.decode("utf-8", "ignore"), "html.parser")
-        return (page_soup.p.text)
+        return (page_soup.prettify)
     else:
-        pass #leave the programme.
+        sys.exit()  # Quitte le programme.
+
 
 print(get_page(url))
-print(create_soup(url, page))
+print(create_soup(url))
 
 
 # Créer la classe qui analyse le contenu de la page
