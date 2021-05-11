@@ -1,18 +1,21 @@
-from outils import get_page
-import os
-from bs4 import BeautifulSoup as bs
-
 from pprint import pprint
+import os
+from urllib.parse import urljoin
+
+from bs4 import BeautifulSoup as BSoup
+import requests as rq
+
+from outils import get_page
 
 
-def get_book_info(soup):
+def get_book_info(soup, url):
     """Fonction permettant de récupérer les infos d'un livre
     et de les enregistrer dans un dictionnaire"""
-    myBookInfos = {}
-    myBookInfos["title"] = get_book_title(soup)
-    myBookInfos["review_rating"] = get_book_rating(soup)
-    myBookInfos["product_description"] = get_book_description(soup)
-    myBookInfos["image_url"] = get_book_image_url(soup)
+    my_book_infos = {}
+    my_book_infos["title"] = get_book_title(soup)
+    my_book_infos["review_rating"] = get_book_rating(soup)
+    my_book_infos["product_description"] = get_book_description(soup)
+    my_book_infos["image_url"] = get_book_image_url(soup, url)
 
     tmp_dict = get_book_table_infos(soup)
     for key, value in tmp_dict.items():
@@ -26,9 +29,9 @@ def get_book_info(soup):
             new_key = "number_available"
         else:
             continue
-        myBookInfos[new_key] = value
+        my_book_infos[new_key] = value
 
-    return myBookInfos
+    return my_book_infos
 
 
 def get_book_title(soup):
@@ -36,7 +39,7 @@ def get_book_title(soup):
     try:
         title = soup.find("h1").text
         return title
-    except:
+    except AttributeError:
         return None
 
 
@@ -57,83 +60,100 @@ def get_book_rating(soup):
         else:
             ratings = None
         return ratings 
-    except:
+    except AttributeError:
         return None
 
 
 def get_book_description(soup):
     """Fonction permettant de récupérer les informations de description"""
     try:
-        prod_desc = soup.find_all("p")
-        prod_desc = prod_desc[3].text
+        prod_desc = soup.select_one(".product_page > p").text
         return prod_desc
-    except:
+    except AttributeError:
         return None
 
 
 def get_book_table_infos(soup):
     """Fonction permettant de récupérer les informations du tableau"""
     product_info = {}
-    try:
-        for elt in soup.find_all("tr"):
-            product_info[elt.find("th").text] = elt.find("td").text
-    except:
-        return None
+
+    for elt in soup.find_all("tr"):
+        product_info[elt.find("th").text] = elt.find("td").text
+    
     return product_info
 
 
-def get_book_image_url(soup):
+def get_book_image_url(soup, url):
     """Fonction permettant de récupérer l'url de l'image"""
     try:
         url_image_tag = soup.find("img")
-        url_image = url_image_tag['src']
+        relative_url_image = url_image_tag['src']
+        url_image = urljoin(url, relative_url_image)
         return url_image
-    except:
+    except TypeError:
         return None
 
 
-def get_book_image(soup):
+def get_book_image(soup, url):
     """Fonction permettant de récupérer l'image"""
-    try:
-        image_url = soup.find_all("img")
-    except:
-        pass
+    response = rq.get(get_book_image_url(soup, url))
+
+    if response.ok:
+        return response.content
+    else:
+        return None
 
 
-def save_book_into_csv(csvfile, book_info):
-    """Fonction permettant d'enregistrer les informations d'un
-     livre dans un fichier csv"""
+def create_image_directory():
+    """Fonction permettant de créer le repertoire
+    images"""
     try:
-        os.mkdir("csvfile")
-        return ("Repertoire csv cree")
+        os.mkdir("imgs")
+        return "Le repertoire imgs a été créé"
     except FileExistsError:
-        return ("Le repertoire existe deja.")
+        return "Le repertoire imgs existe déjà."
+
+
+def save_image(img_name, soup, url):
+    """Fonction permettant d'enregistrer l'image
+    dans un dossier"""
+    with open(img_name, 'wb') as image:
+        image.write(get_book_image(soup, url))
+    return "image sauvegardée"
+
+
+def main(url):
+    """Fonction qui scrape un livre"""
+    soup = get_page(url)
+    # on récupère le dictionnaire
+    my_book_infos = get_book_info(soup, url)
+    my_book_infos['product_page_url'] = url
     
+    print(get_book_image_url(soup, url))
     
+    # Attention création du répertoire pour les images
+    print(create_image_directory())
 
+    # Renommage de l'image avec son "titre" et sauvegarde dans le répertoire imgs
+    img_name = os.path.join("imgs", my_book_infos["title"] + ".jpg")
+    print(save_image(img_name, soup, url))
 
-# def save_image(image):
-#     pass
-#     #if image exist:
-#     #    continue
-#     #else:
-#     #    with open('image_hp_banner.png', 'wb') as image_name
-
-
-# def main():
-#     """??"""
-#     soup = get_page('http://books.toscrape.com/catalogue/dune-dune-1_151/index.html')
-#     book_info = get_book_info(soup)
-#     #with open('a_category.csv') as csvfile:
-#     #    save_book_into_csv(csvfile, book_info)
+    return my_book_infos
     
-# #print(get_book_info(soup))
 
 if __name__ == "__main__":
 
     url = 'http://books.toscrape.com/catalogue/dune-dune-1_151/index.html'
-    soup = get_page(url)
-    # on récupère le dictionnaire
-    myBookInfos = get_book_info(soup)
-    myBookInfos['product_page_url'] = url
-    pprint(myBookInfos)
+
+    # Appel de la fonction main
+    pprint(main(url))
+  
+
+
+
+
+
+#     soup = get_page('http://books.toscrape.com/catalogue/dune-dune-1_151/index.html')
+#     book_info = get_book_info(soup)
+#     #with open('a_category.csv') as csvfile:
+#     #    save_book_into_csv(csvfile, book_info)
