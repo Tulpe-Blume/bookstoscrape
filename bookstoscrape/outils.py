@@ -1,9 +1,8 @@
-import requests as rq
-from bs4 import BeautifulSoup as bs
 import sys
+import os
 
-# brouillon code:
-url = 'http://books.toscrape.com/catalogue/dune-dune-1_151/index.html'
+import requests as rq
+from bs4 import BeautifulSoup as BSoup
 
 
 def get_page(url):
@@ -26,20 +25,11 @@ def get_page(url):
         print("Le nombre de redirections est dépassé")
         sys.exit()  # Quitte le programme
     else:
-        page_soup = bs(response.content.decode("utf-8", "ignore"), "html.parser")
-        return (page_soup)
-        
+        page_soup = BSoup(response.content, "html.parser")
+        return page_soup
 
-#def create_soup(url):
-#    """Fonction permettant de créer la soupe si la page existe"""
-    # # page = rq.get(url)
-    # page = get_page(url)
-    # if page.ok:
-    #     page_soup = bs(page.content.decode("utf-8", "ignore"), "html.parser")
-    #     return (page_soup.prettify)
-    # else:
-    #     sys.exit()  # Quitte le programme.
 
 if __name__ == "__main__":
+    url = 'http://books.toscrape.com/catalogue/dune-dune-1_151/index.html'
     print(get_page(url).prettify())
-    # print(create_soup(url))
+    
