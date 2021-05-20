@@ -4,6 +4,7 @@ from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup as BSoup
 import requests as rq
+from slugify import slugify
 
 from outils import get_page
 
@@ -135,7 +136,14 @@ def main(url):
     print(create_image_directory())
 
     # Renommage de l'image avec son "titre" et sauvegarde dans le répertoire imgs
-    img_name = os.path.join("imgs", my_book_infos["title"] + ".jpg")
+    # On capture le titre dans une variable
+    img_title = my_book_infos["title"]
+    # On nettoie et tronque le titre à une longueur de 80
+    clean_img_name = slugify(img_title, max_length=80) + ".jpg"
+    # On sauvegarde dans my_book_infos le nouveau titre
+    my_book_infos['new_img_name'] = clean_img_name
+    # On renomme l'image et on fait la sauvegarde
+    img_name = os.path.join("imgs", clean_img_name)
     print(save_image(img_name, soup, url))
 
     return my_book_infos
@@ -147,13 +155,3 @@ if __name__ == "__main__":
 
     # Appel de la fonction main
     pprint(main(url))
-  
-
-
-
-
-
-#     soup = get_page('http://books.toscrape.com/catalogue/dune-dune-1_151/index.html')
-#     book_info = get_book_info(soup)
-#     #with open('a_category.csv') as csvfile:
-#     #    save_book_into_csv(csvfile, book_info)
