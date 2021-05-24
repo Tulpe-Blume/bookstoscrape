@@ -2,7 +2,6 @@ from pprint import pprint
 import os
 from urllib.parse import urljoin
 
-from bs4 import BeautifulSoup as BSoup
 import requests as rq
 from slugify import slugify
 
