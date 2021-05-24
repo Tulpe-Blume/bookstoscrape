@@ -108,16 +108,21 @@ def save_books_into_csv(csv_filename, book_info_list):
     return "The books information is saved into the CSV file"
 
 
-def get_category():
-    return "la category"
+def get_category(soup):
+    """Fonction récupérant la catégorie des livres"""
+    try:
+        category = slugify(soup.select_one(".page-header > h1".text))
+        return category
+    except AttributeError:
+        return None
 
-def main(url, soup):
+def main(url):
     """Fonction qui scrape les livres d'une catégorie.
     Et qui retourne une liste de dictionnaires"""
 
     # Créer une liste vide
     all_book_info_list = []
-
+    soup = get_page(url)
     # Récupération de la liste des urls de chaque livre
     book_url_list = get_all_books_page_url(soup, url)
     
@@ -164,8 +169,3 @@ if __name__ == "__main__":
     pprint(main(url, soup))
 
 
-
-#     soup = get_page('http://books.toscrape.com/catalogue/dune-dune-1_151/index.html')
-#     book_info = get_book_info(soup)
-#     #with open('a_category.csv') as csvfile:
-#     #    save_book_into_csv(csvfile, book_info)
