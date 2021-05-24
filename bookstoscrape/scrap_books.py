@@ -18,6 +18,15 @@ def get_book_info(soup, url):
     my_book_infos["product_description"] = get_book_description(soup)
     my_book_infos["image_url"] = get_book_image_url(soup, url)
 
+    # On renomme le nom de l'image puis on la rajoute au dico
+    # On capture le titre dans une variable
+    img_title = my_book_infos["title"]
+    # On nettoie et tronque le titre à une longueur de 80
+    clean_img_name = slugify(img_title, max_length=80) + ".jpg"
+    # On sauvegarde dans my_book_infos le nouveau titre
+    my_book_infos['new_img_name'] = clean_img_name
+
+
     tmp_dict = get_book_table_infos(soup)
     for key, value in tmp_dict.items():
         if key == "UPC":
@@ -134,16 +143,9 @@ def main(url):
     
     # Attention création du répertoire pour les images
     print(create_image_directory())
-
-    # Renommage de l'image avec son "titre" et sauvegarde dans le répertoire imgs
-    # On capture le titre dans une variable
-    img_title = my_book_infos["title"]
-    # On nettoie et tronque le titre à une longueur de 80
-    clean_img_name = slugify(img_title, max_length=80) + ".jpg"
-    # On sauvegarde dans my_book_infos le nouveau titre
-    my_book_infos['new_img_name'] = clean_img_name
-    # On renomme l'image et on fait la sauvegarde
-    img_name = os.path.join("imgs", clean_img_name)
+    
+    # On fait la sauvegarde de l'image dans le repertoire "img"
+    img_name = os.path.join("imgs", my_book_infos["new_img_name"])
     print(save_image(img_name, soup, url))
 
     return my_book_infos
