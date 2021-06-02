@@ -138,14 +138,14 @@ def main(url):
     my_book_infos = get_book_info(soup, url)
     my_book_infos['product_page_url'] = url
     
-    print(get_book_image_url(soup, url))
+    get_book_image_url(soup, url)
     
     # Attention création du répertoire pour les images
-    print(create_image_directory())
+    create_image_directory()
     
     # On fait la sauvegarde de l'image dans le repertoire "img"
     img_name = os.path.join("imgs", my_book_infos["new_img_name"])
-    print(save_image(img_name, soup, url))
+    save_image(img_name, soup, url)
 
     return my_book_infos
     
