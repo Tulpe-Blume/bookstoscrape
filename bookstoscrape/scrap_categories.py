@@ -5,8 +5,8 @@ import csv
 
 from slugify import slugify
 
-from outils import get_page
-from scrap_books import main as scrap_book_main
+from bookstoscrape.tools import get_page
+from bookstoscrape.scrap_books import main as scrap_book_main
 
 
 def get_book_page_url_list(soup, url):
