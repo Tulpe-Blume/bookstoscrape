@@ -79,7 +79,7 @@ def create_csv_directory():
 def save_books_into_csv(csv_filename, book_info_list):
     """Fonction permettant d'enregistrer les informations des
        livres d'une catégorie dans un fichier csv"""
-    with open(csv_filename, 'w', newline='') as csvfile:
+    with open(csv_filename, 'w', newline='', encoding="utf-8-sig") as csvfile:
         header = ['product_page_url', 'universal_product_code', 'title', 'price_including_tax',
                   'price_excluding_tax', 'number_available', 'product_description',
                   'category', 'review_rating', 'image_url', 'new_img_name']
