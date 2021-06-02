@@ -107,7 +107,8 @@ def main(url):
     soup = get_page(url)
     # Récupération de la liste des urls de chaque livre
     book_url_list = get_all_books_page_url(soup, url)
-    
+
+    print(f"Scraping de {url}")
     for book_url in book_url_list:
         # pour chaque livre, on récupère les infos (sous forme de dict)
         book_info_dict = scrap_book_main(url=book_url)
