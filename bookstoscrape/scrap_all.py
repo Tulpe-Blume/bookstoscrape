@@ -1,8 +1,8 @@
 from pprint import pprint
 from urllib.parse import urljoin
 
-from outils import get_page
-from scrap_categories import main as scrap_categories_main
+from bookstoscrape.tools import get_page
+from bookstoscrape.scrap_categories import main as scrap_categories_main
 
 
 def get_categories_url(soup, url):
