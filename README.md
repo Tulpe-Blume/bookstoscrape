@@ -54,9 +54,9 @@ Pour que le programme fonctionne il faut aussi installer les bibliothèques supp
 
 ## 3/Lancer le programme
 
-Pour ce faire, se mettre dans le dossier du programme, dans un terminal: 
+Pour ce faire, lancer le programme dans un terminal: 
 
-	python3 scrap_all.py
+	python3 -m bookstoscrape
 	
 Le programme va alors sauvegarder toutes les convertures des livres dans un dossier "imgs". Dans un autre dossier "csvfile", il récupèrera les informations de chaque livre dans des fichiers CSV au nom de chaque catégorie.
 
