@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 import requests as rq
 from slugify import slugify
 
-from outils import get_page
+from bookstoscrape.tools import get_page
 
 
 def get_book_info(soup, url):
