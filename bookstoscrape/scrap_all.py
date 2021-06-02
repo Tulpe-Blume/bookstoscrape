@@ -22,7 +22,7 @@ def get_categories_url(soup, url):
 
 
 def main():
-    print("dans scrap_all.py")
+    print("Démarrage du scraping")
     url = "http://books.toscrape.com/index.html"
     soup = get_page(url)
 
@@ -33,6 +33,7 @@ def main():
     for category_url in all_categories_url_list:
         scrap_categories_main(category_url)
 
+    print("Sraping terminé")
 
 if __name__ == "__main__":
     print(main())
