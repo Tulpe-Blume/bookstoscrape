@@ -1,5 +1,4 @@
 import sys
-import os
 
 import requests as rq
 from bs4 import BeautifulSoup as BSoup
