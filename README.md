@@ -32,6 +32,9 @@ Si vous souhaitez pouvoir récupérer plus facilement les modifications, et ou e
 
 Pour l'installation de git sur votre ordinateur : [c'est ici!](https://git-scm.com/book/fr/v2/D%C3%A9marrage-rapide-Installation-de-Git)
 
+Se mettre dans le dossier, dans lequel on veut mettre le dépot. Pour récupérer le dépot:
+
+	git clone https://github.com/Tulpe-Blume/bookstoscrape.git
 
 ### Environnement virtuel
 
