@@ -72,11 +72,11 @@ Le programme va alors sauvegarder toutes les convertures des livres dans un doss
 
 ## Auteur
 
-Nadège Andrei
+Nadège Kelli Andrei
 
 ## Remerciements
 
-Mon mentor Thierry, Chaton Biscotte, mes chats
+Mon mentor Thierry, Chaton Biscotte, Clem, mes chats
 
 **Enjoy!! :)**
 	
