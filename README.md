@@ -26,6 +26,13 @@ Le programme télécharge des images, des informations, par conséquent, il est 
 
 Ce programme utilise python3.8.8, il est nécessaire qu'il soit installé sur votre ordinateur. Pour télécharger python c'est [ici](https://www.python.org/downloads/) !
 
+Si vous souhaitez pouvoir récupérer plus facilement les modifications, et ou en apporter, une installation de git est nécessaire.
+
+### Git et GitHub
+
+Pour l'installation de git sur votre ordinateur : [c'est ici!](https://git-scm.com/book/fr/v2/D%C3%A9marrage-rapide-Installation-de-Git)
+
+
 ### Environnement virtuel
 
 **Pour Windows:**
